@@ -24,7 +24,7 @@ namespace BigSchool.Controllers
                 Categories = _dbContext.Categories.ToList()
             };
 
-            return View();
+            return View(viewModel);
         }
     }
 }
