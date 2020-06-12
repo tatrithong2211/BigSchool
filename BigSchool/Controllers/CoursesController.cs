@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using BigSchool.Models;
 using BigSchool.ViewModels;
+using Microsoft.AspNet.Identity;
 
 namespace BigSchool.Controllers
 {
@@ -17,14 +18,31 @@ namespace BigSchool.Controllers
             _dbContext = new ApplicationDbContext();
         }
         // GET: Courses
-        public ActionResult Create()
+        [Authorize]
+        [HttpPost]
+        public ActionResult Create(CourseViewModel viewModel)
         {
-            var viewModel = new CourseViewModel
+            if(!ModelState.IsValid)
             {
-                Categories = _dbContext.Categories.ToList()
-            };
+                viewModel.Categories = _dbContext.Categories.ToList();
 
-            return View(viewModel);
+                return View("Create", viewModel);
+            }
+            var course = new Course
+            {
+                LecturerId = User.Identity.GetUserId(),
+
+                Datetime = viewModel.GetDateTime(),
+
+                CategoryId = viewModel.Category,
+
+                Place = viewModel.Place
+            };
+            _dbContext.Courses.Add(course);
+
+            _dbContext.SaveChanges();
+
+            return RedirectToAction("Index", "Home");
         }
     }
 }
