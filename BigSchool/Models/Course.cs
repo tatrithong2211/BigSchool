@@ -30,6 +30,7 @@ namespace BigSchool.Models
         [Required]
 
         public byte CategoryId { get; set; }
+        public DateTime DateTime { get; internal set; }
     }
 
    
