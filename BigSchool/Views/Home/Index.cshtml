@@ -2,49 +2,130 @@
 @{
     ViewBag.Title = "Home Page";
 }
-<div class="row">
-    <ul>
-        @foreach (var course in Model)
+@using Microsoft.AspNet.Identity
+<div class="Row">
+    <h1>Schedule</h1>
+    <ul class="course">
+        @foreach (var course in Model.UpCommingCourses)
         {
+
             <li>
                 <div class="date">
-                    <div class="month">
-                        @course.DateTime.ToString("MM")
-                    </div>
                     <div class="day">
                         @course.DateTime.ToString("dd")
                     </div>
+                    <div class="month">
+                        @course.DateTime.ToString("MM")
+                    </div>
                 </div>
                 <div class="details">
-                    <span class="lecturer">
+                    <div class="lecturer">
                         @course.Lecturer.Name
-                    </span>
-                    <span class="category">
+                        @if (Model.ShowAction)
+                        {
+                            if (@course.LecturerId == User.Identity.GetUserId()) { }
+                            else
+                            {
+                                bool isFollowing = Model.ListOfFollowings.Any(f => f.Followee.Id == @course.LecturerId); if (isFollowing == true)
+                                {<button data-user-id="@course.LecturerId" class="btn btn-link btn-sm js-toggle-follow">
+                            Following
+                        </button>
+                                }
+                                else
+                                {
+                                    <button data-user-id="@course.LecturerId" class="btn btn-link btn-sm js-toggle-follow">
+                                        Follow
+                                    </button>
+                                }
+                            }
+                        }
+                    </div>
+                    <div class="category">
                         @course.Category.Name
-                    </span>
-                    <button data-course-id ="@course.Id" class="btn btn-default btn-sm js-toggle-attendance">Going?</button>
+                        @if (Model.ShowAction)
+                        {
+                            if (@course.LecturerId == User.Identity.GetUserId())
+                            { }
+                            else
+                            {
+                                bool isGoing = Model.ListOfAttendedCourses.Any(c => c.CourseId == @course.Id);
+                                if (isGoing == true)
+                                {
+                                    <button data-course-id="@course.Id" class="btn btn-info btn-sm js-toggle-attendance">Going</button>
+                                }
+                                else
+                                {
+                                    <button data-course-id="@course.Id" class="btn btn-default btn-sm js-toggle-attendance">Going ?</button>
+                                }
+                            }
+                        }
+                    </div>
+                    <a href="@Url.Action("Detail", "Courses", new {id = course.Id })" class="btn btn-success">
+                        Detail
+                    </a>
                 </div>
             </li>
         }
     </ul>
-    @section scripts
-    {
-        <script>
-    $(document).ready(function (){
-        $(".js-toggle-attendance").click(function (e) {
-            var button = $(e.target);
-            $.post("/api/attendances", { courseId: button.attr("data-course-id")})
+</div>
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            $(".js-toggle-attendance").click(function (e) {
+                var button = $(e.target);
+                $.post("/api/attendances", { courseId: button.attr("data-course-id") })
                     .done(function () {
-                        button
-                               .removeClass("btn-default")
-                               .addClass("btn-info")
-                               .text("Going");
+                        if (button.text().trim() === "Going ?") {
+                            button
+                                .removeClass("btn-default")
+                                .addClass("btn-info")
+                                .text("Going");
+                        } else {
+                            button
+                                .removeClass("btn-info")
+                                .addClass("btn-default")
+                                .text("Going ?");
+                        }
                     })
-                       .fail(function () {
-                           alert("Something failed!");
+                    .fail(function () {
+                        alert("Something failed!");
                     });
-                });
-     });
-  </script>
- }
- </div>
+            });
+            $(".js-toggle-follow").click(function (e) {
+                var button = $(e.target);
+                $.post("/api/followings", { followeeId: button.attr("data-user-id") })
+                    .done(function () {
+                        if (button.text().trim() === "Follow") {
+                            button.text("Following");
+                        }
+                        else {
+                            button.text("Follow");
+                        }
+                    })
+                    .fail(function () {
+                        alert("Something failed!");
+                    });
+            });
+        });
+    </script>
+}
+<div class="row">
+    <div class="col-md-4">
+        <h2>Getting started</h2>
+        <p>
+            Hello
+        </p>
+        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
+    </div>
+    <div class="col-md-4">
+        <h2>Get more libraries</h2>
+        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
+        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
+    </div>
+    <div class="col-md-4">
+        <h2>Web Hosting</h2>
+        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
+        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
+    </div>
+</div>

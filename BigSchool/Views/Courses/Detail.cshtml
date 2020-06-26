@@ -1,0 +1,77 @@
+﻿@model BigSchool.ViewModels.CourseViewModel
+@{
+    ViewBag.Title = "Detail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using Microsoft.AspNet.Identity
+<h2>Course Detail</h2>
+<div>
+    <h4>CourseViewModel</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        @foreach (var course in Model.UpCommingCourses)
+        {
+            <dd>
+                <label>Lecturer:</label>
+                @course.Lecturer.Name
+            </dd>
+            <dd>
+                <label>Course Name:</label>
+                @course.Category.Name
+            </dd>
+            <dd>
+                <label>Time:</label>
+                @course.DateTime.
+            </dd>
+            <dd>
+                <label>Place:</label>
+                @course.Place
+            </dd>
+            <dd>
+                @if (@course.LecturerId == User.Identity.GetUserId()) { }
+                else
+                {
+                    bool isGoing = Model.ListOfAttendedCourses.Any(c => c.CourseId == @course.Id);
+                    if (isGoing == true)
+                    {
+                        <button data-course-id="@course.Id" class="btn btn-info btn-sm js-toggle-attendance">Going</button>
+                    }
+                    else
+                    {
+                        <button data-course-id="@course.Id" class="btn btn-default btn-sm js-toggle-attendance">Going ?</button>
+                    }
+                }
+            </dd>
+        }
+    </dl>
+</div>
+<p>
+    @*@Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |*@
+    @Html.ActionLink("Back to List", "Index", "Home")
+</p>
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $(".js-toggle-attendance").click(function (e) {
+                var button = $(e.target);
+                $.post("/api/attendances", { courseId: button.attr("data-course-id") })
+                    .done(function () {
+                        if (button.text().trim() === "Going ?") {
+                            button
+                                .removeClass("btn-default")
+                                .addClass("btn-info")
+                                .text("Going");
+                        } else {
+                            button
+                                .removeClass("btn-info")
+                                .addClass("btn-default")
+                                .text("Going ?");
+                        }
+                    })
+                    .fail(function () {
+                        alert("Something failed!");
+                    });
+            });
+        });
+    </script>
+}

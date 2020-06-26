@@ -1,0 +1,55 @@
+﻿@model BigSchool.ViewModels.CourseViewModel
+@{
+    ViewBag.Title = "Follower";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using Microsoft.AspNet.Identity
+<div class="Row">
+    <h1>Followers</h1>
+    <ul class="course">
+        @foreach (var follower in Model.ListOfFollowers)
+        {
+            <li>
+                <p>@follower.Follower.Name</p>
+                @if (Model.ShowAction)
+                {
+                    bool isFollowing = Model.ListOfFollowings.Any(f => f.Followee.Id == follower.FollowerId);
+                    if (isFollowing == true)
+                    {
+                        <button data-user-id="@follower.FollowerId" class="btn btn-link btn-sm js-toggle-follow">
+                            Following
+                        </button>
+                    }
+                    else
+                    {
+                        <button data-user-id="@follower.FollowerId" class="btn btn-link btn-sm js-toggle-follow">
+                            Follow
+                        </button>
+                    }
+                }
+            </li>
+        }
+    </ul>
+</div>
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            $(".js-toggle-follow").click(function (e) {
+                var button = $(e.target);
+                $.post("/api/followings", { followeeId: button.attr("data-user-id") })
+                    .done(function () {
+                        if (button.text().trim() === "Follow") {
+                            button.text("Following");
+                        }
+                        else {
+                            button.text("Follow");
+                        }
+                    })
+                    .fail(function () {
+                        alert("Something failed!");
+                    });
+            });
+        });
+    </script>
+}
