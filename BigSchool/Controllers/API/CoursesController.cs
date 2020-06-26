@@ -7,15 +7,17 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 
-namespace BigSchool.Controllers.API
+namespace BigSchool.Controllers.Api
 {
     public class CoursesController : ApiController
     {
         public ApplicationDbContext _dbContext { get; set; }
+
         public CoursesController()
         {
             _dbContext = new ApplicationDbContext();
         }
+
         [HttpDelete]
         public IHttpActionResult Cancel(int id)
         {

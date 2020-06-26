@@ -1,88 +1,56 @@
 ﻿using BigSchool.Models;
-using System.Web.Mvc;
+using BigSchool.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System;
-using BigSchool.ViewModels;
+using System.Web;
+using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
-////using Korzh.EasyQuery.Linq;
-using System.Threading.Tasks;
-using System.Web.Http.Filters;
+
 
 namespace BigSchool.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ApplicationDbContext _dbContext;
+        private ApplicationDbContext _dbContext;
+
         public HomeController()
         {
             _dbContext = new ApplicationDbContext();
         }
-        public ActionResult Index(string searching)
+
+        public ActionResult Index()
         {
-            var viewModel = new CourseViewModel();
-            if (searching == null)
-            {
-                var userId = User.Identity.GetUserId();
-                var listOfAttendedCourses = _dbContext.Attendance
-                    .Include(a => a.Course)
-                    .Include(a => a.Attendee)
-                    .Where(a => a.AttendeeId == userId).ToList();
 
-                var upCommingCourses = _dbContext.Course
-                    .Include(c => c.Lecturer)
-                    .Include(c => c.Category)
-                    .Where(c => c.DateTime > DateTime.Now).ToList();
+            var userId = User.Identity.GetUserId();
 
-                var followingLecturers = _dbContext.Following
+            var listOfAttendedCourses = _dbContext.Attendance
+                .Include(a => a.Course)
+                .Include(a => a.Attendee)
+                .Where(a => a.AttendeeId == userId).ToList();
+
+            var upcommingCourses = _dbContext.Course
+                .Include(c => c.Lecturer)
+                .Include(c => c.Category)
+                .Where(c => c.DateTime > DateTime.Now).ToList();
+
+            var followingLecturers = _dbContext.Followings
                     .Include(f => f.Followee)
                     .Include(f => f.Follower)
                     .Where(a => a.FollowerId == userId)
                     .ToList();
 
-                viewModel = new CourseViewModel
-                {
-                    ListOfAttendedCourses = listOfAttendedCourses,
-                    ListOfFollowings = followingLecturers,
-                    UpCommingCourses = upCommingCourses,
-                    ShowAction = User.Identity.IsAuthenticated
-                };
-                return View(viewModel);
-            }
-            else
+            var viewModel = new CourseViewModel
             {
-                var userId = User.Identity.GetUserId();
-                var listOfAttendedCourses = _dbContext.Attendance
-                    .Include(a => a.Course)
-                    .Include(a => a.Attendee)
-                    .Where(a => a.AttendeeId == userId).ToList();
+                ListOfAttendedCourses = listOfAttendedCourses,
+                ListOfFollowings = followingLecturers,
+                UpcommingCourses = upcommingCourses,
+                ShowAction = User.Identity.IsAuthenticated
+            };
 
-                var upCommingCourses = _dbContext.Course
-                    .Include(c => c.Lecturer)
-                    .Include(c => c.Category)
-                    .Where(c => c.Lecturer.Name.Contains(searching) || c.Category.Name.Contains(searching)).ToList();
-
-                var followingLecturers = _dbContext.Following
-                    .Include(f => f.Followee)
-                    .Include(f => f.Follower)
-                    .Where(a => a.FollowerId == userId)
-                    .ToList();
-
-                viewModel = new CourseViewModel
-                {
-                    ListOfAttendedCourses = listOfAttendedCourses,
-                    ListOfFollowings = followingLecturers,
-                    UpCommingCourses = upCommingCourses,
-                    ShowAction = User.Identity.IsAuthenticated
-                };
-                return View(viewModel);
-            }
-
-
+            return View(viewModel);
         }
-
-
 
         public ActionResult About()
         {

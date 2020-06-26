@@ -16,7 +16,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>BigSchool</RootNamespace>
     <AssemblyName>BigSchool</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
@@ -93,7 +93,6 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Data" />
-    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Diagnostics.DiagnosticSource, Version=4.0.4.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Diagnostics.DiagnosticSource.4.6.0\lib\net46\System.Diagnostics.DiagnosticSource.dll</HintPath>
       <Private>True</Private>
@@ -122,7 +121,6 @@
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Http, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
       <Private>True</Private>
@@ -173,7 +171,6 @@
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
-    <Reference Include="System.Xml.Linq" />
     <Reference Include="WebGrease">
       <Private>True</Private>
       <HintPath>..\packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
@@ -250,6 +247,7 @@
     <Compile Include="Migrations\202006050655550_IntitialModel.Designer.cs">
       <DependentUpon>202006050655550_IntitialModel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202006050701453_CreateTableCourse1.cs" />
     <Compile Include="Migrations\202006050727060_CreateTableCourse.cs" />
     <Compile Include="Migrations\202006050727060_CreateTableCourse.Designer.cs">
       <DependentUpon>202006050727060_CreateTableCourse.cs</DependentUpon>
@@ -258,6 +256,7 @@
     <Compile Include="Migrations\202006050740136_PopulateCategoryTable.Designer.cs">
       <DependentUpon>202006050740136_PopulateCategoryTable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202006190402259_AddIsCanceledColumnToCourse.cs" />
     <Compile Include="Migrations\202006190728547_AddNameColumnToApplicationUser.cs" />
     <Compile Include="Migrations\202006190728547_AddNameColumnToApplicationUser.designer.cs">
       <DependentUpon>202006190728547_AddNameColumnToApplicationUser.cs</DependentUpon>
@@ -269,6 +268,10 @@
     <Compile Include="Migrations\202006240236049_AddFollowingsTable.cs" />
     <Compile Include="Migrations\202006240236049_AddFollowingsTable.designer.cs">
       <DependentUpon>202006240236049_AddFollowingsTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202006260717134_thong.cs" />
+    <Compile Include="Migrations\202006260717134_thong.designer.cs">
+      <DependentUpon>202006260717134_thong.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -383,6 +386,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202006240236049_AddFollowingsTable.resx">
       <DependentUpon>202006240236049_AddFollowingsTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202006260717134_thong.resx">
+      <DependentUpon>202006260717134_thong.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -6,10 +6,9 @@
 @using Microsoft.AspNet.Identity
 <h2>Course Detail</h2>
 <div>
-    <h4>CourseViewModel</h4>
     <hr />
     <dl class="dl-horizontal">
-        @foreach (var course in Model.UpCommingCourses)
+        @foreach (var course in Model.UpcommingCourses)
         {
             <dd>
                 <label>Lecturer:</label>
@@ -46,7 +45,6 @@
     </dl>
 </div>
 <p>
-    @*@Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |*@
     @Html.ActionLink("Back to List", "Index", "Home")
 </p>
 @section Scripts {

@@ -19,7 +19,7 @@ namespace BigSchool.Controllers
         public IHttpActionResult Follow(FollowingDto followingDto)
         {
             var userId = User.Identity.GetUserId();
-            if (_dbContext.Following.Any(f => f.FollowerId == userId && f.FolloweeId == followingDto.FolloweeId))
+            if (_dbContext.Followings.Any(f => f.FollowerId == userId && f.FolloweeId == followingDto.FolloweeId))
             {
                 var following = new Following
                 {
@@ -27,8 +27,8 @@ namespace BigSchool.Controllers
                     FolloweeId = followingDto.FolloweeId,
                 };
 
-                _dbContext.Following.Attach(following);
-                _dbContext.Following.Remove(following);
+                _dbContext.Followings.Attach(following);
+                _dbContext.Followings.Remove(following);
                 _dbContext.SaveChanges();
                 return Ok();
             }
@@ -40,7 +40,7 @@ namespace BigSchool.Controllers
                     FolloweeId = followingDto.FolloweeId,
                 };
 
-                _dbContext.Following.Add(following);
+                _dbContext.Followings.Add(following);
                 _dbContext.SaveChanges();
                 return Ok();
             }

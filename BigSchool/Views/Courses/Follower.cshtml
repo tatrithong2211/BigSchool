@@ -14,7 +14,7 @@
                 <p>@follower.Follower.Id</p>
                 @if (Model.ShowAction)
                 {
-                    <button data-user-id="@follower.FolloweeId" class="btn btn-link btn-sm js-toggle-follow">
+                    <button data-user-id="@followee.FolloweeId" class="btn btn-link btn-sm js-toggle-follow">
                         Follow
                     </button>
                 }
@@ -44,3 +44,5 @@
         });
     </script>
 }
+
+

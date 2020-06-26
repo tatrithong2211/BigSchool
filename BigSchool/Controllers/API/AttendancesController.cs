@@ -1,6 +1,4 @@
-﻿
-using BigSchool.DTOs;
-using BigSchool.Models;
+﻿using BigSchool.Models;
 using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
@@ -8,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using BigSchool.DTOs;
 
 namespace BigSchool.Controllers
 {
@@ -15,11 +14,12 @@ namespace BigSchool.Controllers
     public class AttendancesController : ApiController
     {
         private ApplicationDbContext _dbContext;
+
         public AttendancesController()
         {
             _dbContext = new ApplicationDbContext();
-
         }
+
         [HttpPost]
         public IHttpActionResult Attend(AttendanceDto attendanceDto)
         {
@@ -31,7 +31,6 @@ namespace BigSchool.Controllers
                     CourseId = attendanceDto.CourseId,
                     AttendeeId = userId
                 };
-
                 _dbContext.Attendance.Attach(attendance);
                 _dbContext.Attendance.Remove(attendance);
                 _dbContext.SaveChanges();
@@ -50,7 +49,6 @@ namespace BigSchool.Controllers
                 _dbContext.SaveChanges();
                 return Ok();
             }
-
         }
     }
 }
